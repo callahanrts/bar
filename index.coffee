@@ -1,7 +1,7 @@
 #############################################################################
 # Customization
 #############################################################################
-bar:
+bar =
   width: "100%"
   height: 23 # Text vertically aligns best with odd heights
 
@@ -37,17 +37,17 @@ date: "%a %d %b"
 #############################################################################
 
 style: """
-  width: calc(#{@bar.width} - #{@bar.gap.left * 2 + @bar.gap.right}px)
-  height: #{@bar.height}px
-  left: #{@bar.gap.left}px
-  top: #{@bar.gap.top}px
-  color: #{@bar.font.color}
-  background-color: #{@bar.background.color}
-  padding: #{@bar.padding}
+  width: calc(#{bar.width} - #{bar.gap.left * 2 + bar.gap.right}px)
+  height: #{bar.height}px
+  left: #{bar.gap.left}px
+  top: #{bar.gap.top}px
+  color: #{bar.font.color}
+  background-color: #{bar.background.color}
+  padding: #{bar.padding}
   z-index: 20
 
-  border-radius: #{@bar.border.radius}px;
-  border-color: #{@bar.border.color}
+  border-radius: #{bar.border.radius}px;
+  border-color: #{bar.border.color}
 
   -webkit-box-shadow: 0px 2px 5px 0 #000000
   box-shadow: 0px 2px 5px 0 #000000
@@ -57,8 +57,8 @@ style: """
 
   div
     display: inline-block
-    height: #{@bar.height}px
-    line-height: #{@bar.height}px
+    height: #{bar.height}px
+    line-height: #{bar.height}px
 
   span
     vertical-align: middle
@@ -169,6 +169,7 @@ addBattery: (el) ->
 
 addPlaying: (el) ->
   @getPlayingTracks()
+
   for source, track of @playing
     $icon = $(".playing span.icon")
     $icon.removeClass().addClass("icon")
