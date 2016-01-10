@@ -1,4 +1,6 @@
-
+#############################################################################
+# Customization
+#############################################################################
 bar =
   width: "100%"
   height: 23 # Text vertically aligns best with odd heights
@@ -25,6 +27,8 @@ playing:
   spotify: ""
   youtube: ""
   soundcloud: ""
+
+#############################################################################
 
 style: """
   width: calc(#{bar.width} - #{bar.gap.left * 2 + bar.gap.right}px)
