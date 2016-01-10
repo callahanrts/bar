@@ -1,2 +1,2 @@
 #date
-date +"%a %d %b"
+date +$1

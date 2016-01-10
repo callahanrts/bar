@@ -1,7 +1,7 @@
 #############################################################################
 # Customization
 #############################################################################
-bar =
+bar:
   width: "100%"
   height: 23 # Text vertically aligns best with odd heights
 
@@ -28,20 +28,26 @@ playing:
   youtube: ""
   soundcloud: ""
 
+# Time format
+time: "%l:%M"
+
+# Date Format
+date: "%a %d %b"
+
 #############################################################################
 
 style: """
-  width: calc(#{bar.width} - #{bar.gap.left * 2 + bar.gap.right}px)
-  height: #{bar.height}px
-  left: #{bar.gap.left}px
-  top: #{bar.gap.top}px
-  color: #{bar.font.color}
-  background-color: #{bar.background.color}
-  padding: #{bar.padding}
+  width: calc(#{@bar.width} - #{@bar.gap.left * 2 + @bar.gap.right}px)
+  height: #{@bar.height}px
+  left: #{@bar.gap.left}px
+  top: #{@bar.gap.top}px
+  color: #{@bar.font.color}
+  background-color: #{@bar.background.color}
+  padding: #{@bar.padding}
   z-index: 20
 
-  border-radius: #{bar.border.radius}px;
-  border-color: #{bar.border.color}
+  border-radius: #{@bar.border.radius}px;
+  border-color: #{@bar.border.color}
 
   -webkit-box-shadow: 0px 2px 5px 0 #000000
   box-shadow: 0px 2px 5px 0 #000000
@@ -51,8 +57,8 @@ style: """
 
   div
     display: inline-block
-    height: #{bar.height}px
-    line-height: #{bar.height}px
+    height: #{@bar.height}px
+    line-height: #{@bar.height}px
 
   span
     vertical-align: middle
@@ -135,13 +141,25 @@ render: (output) ->
   """
 
 update: (output, el) ->
+  @addFocused(el)
+  @addTime(el)
+  @addDate(el)
+  @addBattery(el)
+  @addPlaying(el)
 
-  @run "sh bar/commands/time", (err, time) =>
-    $(".time span", el).text(time)
+addFocused: (el) ->
+  @run "osascript -e 'tell application \"System Events\"' -e 'set frontApp to name of first application process whose frontmost is true' -e 'end tell'", (err, focused) =>
+    $(".focused span", el).text(focused)
 
-  @run "sh bar/commands/date", (err, date) =>
+addDate: (el) ->
+  @run "date +'#{@date}'", (err, date) =>
     $(".date span", el).text(date)
 
+addTime: (el) ->
+  @run "date +'#{@time}'", (err, time) =>
+    $(".time span", el).text(time)
+
+addBattery: (el) ->
   @run "sh bar/commands/battery", (err, battery) =>
     battery = parseInt(battery)
     $(".battery span:first-child", el).text("#{battery}%")
@@ -149,15 +167,8 @@ update: (output, el) ->
     $icon.removeClass().addClass("icon")
     $icon.addClass("fa #{@batteryIcon(battery)}")
 
-  @run "sh bar/commands/spotify", (err, spotify) =>
-    @playing.spotify = if !!spotify then spotify else ""
-
-  @run "cat bar/playing/youtube", (err, track) =>
-    @playing.youtube = if !!track then track else ""
-
-  @run "cat bar/playing/soundcloud", (err, track) =>
-    @playing.soundcloud = if !!track then track else ""
-
+addPlaying: (el) ->
+  @getPlayingTracks()
   for source, track of @playing
     $icon = $(".playing span.icon")
     $icon.removeClass().addClass("icon")
@@ -168,8 +179,15 @@ update: (output, el) ->
       $playing.text(track)
       break
 
-  @run "osascript -e 'tell application \"System Events\"' -e 'set frontApp to name of first application process whose frontmost is true' -e 'end tell'", (err, focused) =>
-    $(".focused span", el).text(focused)
+getPlayingTracks: ->
+  @run "sh bar/commands/spotify", (err, spotify) =>
+    @playing.spotify = if !!spotify then spotify else ""
+
+  @run "cat bar/playing/youtube", (err, track) =>
+    @playing.youtube = if !!track then track else ""
+
+  @run "cat bar/playing/soundcloud", (err, track) =>
+    @playing.soundcloud = if !!track then track else ""
 
 
 batteryIcon: (percentage) =>

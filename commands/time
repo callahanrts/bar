@@ -1,2 +1,2 @@
 # Time
-date +"%l:%M"
+date +$1
