@@ -20,6 +20,12 @@ bar =
 
   padding: "0 10px"
 
+# Order represents priority
+playing:
+  spotify: ""
+  youtube: ""
+  soundcloud: ""
+
 style: """
   width: calc(#{bar.width} - #{bar.gap.left * 2 + bar.gap.right}px)
   height: #{bar.height}px
@@ -27,7 +33,7 @@ style: """
   top: #{bar.gap.top}px
   color: #{bar.font.color}
   background-color: #{bar.background.color}
-  padding: #{navbar.padding}
+  padding: #{bar.padding}
   z-index: 20
 
   border-radius: #{bar.border.radius}px;
@@ -71,6 +77,13 @@ style: """
     .fa-spotify
       color: #2fd566
 
+    .fa-youtube, .fa-youtube-play
+      color: #e62117
+
+    .fa-soundcloud
+      color: #f50
+      font-size: 18px
+
   .battery
     .icon
       margin-left: 3px
@@ -83,9 +96,14 @@ style: """
 """
 
 command: ""
+
+server:  "#{process.argv[0]} bar/server"
+
 refreshFrequency: 1000 # ms
 
 render: (output) ->
+  @run @server
+
   """
     <link rel="stylesheet" href="bar/assets/font-awesome/css/font-awesome.min.css" />
 
@@ -107,7 +125,7 @@ render: (output) ->
     </div>
 
     <div class='center playing'>
-      <span class="icon fa fa-spotify"></span>
+      <span class="icon"></span>
       <span></span>
     </div>
   """
@@ -123,25 +141,48 @@ update: (output, el) ->
   @run "sh bar/commands/battery", (err, battery) =>
     battery = parseInt(battery)
     $(".battery span:first-child", el).text("#{battery}%")
-    $(".battery span.icon", el).removeClass(":not(.icon)")
-    icon = if battery > 90
-      "fa-battery-full"
-    else if battery > 70
-      "fa-battery-three-quarters"
-    else if battery > 40
-      "fa-battery-half"
-    else if battery > 20
-      "fa-battery-quarter"
-    else
-      "fa-battery-empty"
-    $(".battery span.icon", el).addClass("fa #{icon}")
+    $icon = $(".battery span.icon", el)
+    $icon.removeClass().addClass("icon")
+    $icon.addClass("fa #{@batteryIcon(battery)}")
 
   @run "sh bar/commands/spotify", (err, spotify) =>
-    $(".playing span:last-child", el).text(spotify)
+    @playing.spotify = if !!spotify then spotify else ""
+
+  @run "cat bar/playing/youtube", (err, track) =>
+    @playing.youtube = if !!track then track else ""
+
+  @run "cat bar/playing/soundcloud", (err, track) =>
+    @playing.soundcloud = if !!track then track else ""
+
+  for source, track of @playing
+    $icon = $(".playing span.icon")
+    $icon.removeClass().addClass("icon")
+    $playing = $(".playing span:last-child", el)
+    $playing.text("")
+    if track
+      $icon.addClass("fa fa-#{@playingIcon(source)}")
+      $playing.text(track)
+      break
 
   @run "osascript -e 'tell application \"System Events\"' -e 'set frontApp to name of first application process whose frontmost is true' -e 'end tell'", (err, focused) =>
     $(".focused span", el).text(focused)
 
 
-log: (string) =>
-  @run "echo \"#{string}\" > bar/dev.log"
+batteryIcon: (percentage) =>
+  return if percentage > 90
+    "fa-battery-full"
+  else if percentage > 70
+    "fa-battery-three-quarters"
+  else if percentage > 40
+    "fa-battery-half"
+  else if percentage > 20
+    "fa-battery-quarter"
+  else
+    "fa-battery-empty"
+
+playingIcon: (source) =>
+  return switch source
+    when "youtube" then "youtube-play"
+    when "soundcloud" then "soundcloud"
+    when "spotify" then "spotify"
+    else ""
