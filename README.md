@@ -15,7 +15,10 @@ Bar is an [Übersicht](https://github.com/felixhageloh/uebersicht) widget that s
 - Time
 
 ## Installation
-[Download](/callahanrts/bar/archive/master.zip) and unzip Bar. Place the folder in your Übersicht widgets directory.
+Download (or clone) this repository and place the folder in your Übersicht widgets directory.
+
+## Configuration
+...
 
 ## Screenshots
 ![Soundcloud](http://i.imgur.com/ENprGEy.png)
