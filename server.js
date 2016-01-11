@@ -28,7 +28,17 @@ app.all('/*', function(req, res, next) {
   next();
 });
 
+var updateTimeouts = {
+  "soundcloud": null,
+  "youtube": null
+}
 app.get('/', function (req, res) {
+
+  clearTimeout(updateTimeouts[req.query.host])
+  updateTimeouts[req.query.host] = setTimeout(function(){
+    fs.writeFileSync("bar/playing/" + req.query.host, "");
+  }, 5000);
+
   if(req.query.playing){
     fs.writeFileSync("bar/playing/" + req.query.host, req.query.track);
   } else {

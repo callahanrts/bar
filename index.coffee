@@ -107,12 +107,14 @@ style: """
 
 command: ""
 
-server:  "#{process.argv[0]} bar/server"
+server:  "#{process.argv[0]} bar/server.js"
 
 refreshFrequency: 1000 # ms
 
 render: (output) ->
   @run @server
+  @run "cat '' > bar/playing/soundcloud"
+  @run "cat '' > bar/playing/youtube"
 
   """
     <link rel="stylesheet" href="bar/assets/font-awesome/css/font-awesome.min.css" />
