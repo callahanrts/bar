@@ -27,6 +27,7 @@ playing:
   spotify: ""
   youtube: ""
   soundcloud: ""
+  sonos: ""
 
 # Time format
 time: "%l:%M"
@@ -108,6 +109,7 @@ style: """
 command: ""
 
 server:  "#{process.argv[0]} bar/server.js"
+sonos: "#{process.argv[0]} bar/commands/sonos"
 
 refreshFrequency: 1000 # ms
 
@@ -191,6 +193,9 @@ getPlayingTracks: ->
 
   @run "cat bar/playing/soundcloud", (err, track) =>
     @playing.soundcloud = if !!track then track else ""
+
+  #@run @sonos, (err, sonos) =>
+  #  @playing.sonos = err
 
 
 batteryIcon: (percentage) =>
