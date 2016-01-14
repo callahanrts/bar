@@ -30,7 +30,7 @@ playing:
   sonos: ""
 
 # Time format
-time: "%l:%M"
+time: "%l:%M:%S"
 
 # Date Format
 date: "%a %d %b"
@@ -106,15 +106,17 @@ style: """
 
 """
 
-command: ""
-
-server:  "#{process.argv[0]} bar/server.js"
-sonos: "#{process.argv[0]} bar/commands/sonos"
+command: "#{process.argv[0]} bar/commands/update.js"
 
 refreshFrequency: 1000 # ms
 
+server:  "#{process.argv[0]} bar/server.js"
+#sonos: "#{process.argv[0]} bar/commands/sonos.js 1000"
+
 render: (output) ->
-  @run @server
+  @updateBattery = true
+
+  #@run @server
   @run "cat '' > bar/playing/soundcloud"
   @run "cat '' > bar/playing/youtube"
 
@@ -146,30 +148,30 @@ render: (output) ->
 
 update: (output, el) ->
   @addFocused(el)
-  @addTime(el)
-  @addDate(el)
-  @addBattery(el)
+  data = JSON.parse(output)
+  @addTime(data.time, el)
+  @addDate(data.date, el)
+  @addBattery(data.battery, el)
+  #$playing = $(".playing span:last-child", el)
+  #$playing.text(output)
   @addPlaying(el)
 
 addFocused: (el) ->
   @run "osascript -e 'tell application \"System Events\"' -e 'set frontApp to name of first application process whose frontmost is true' -e 'end tell'", (err, focused) =>
     $(".focused span", el).text(focused)
 
-addDate: (el) ->
-  @run "date +'#{@date}'", (err, date) =>
-    $(".date span", el).text(date)
+addDate: (date, el) ->
+  $(".date span", el).text(date)
 
-addTime: (el) ->
-  @run "date +'#{@time}'", (err, time) =>
-    $(".time span", el).text(time)
+addTime: (time, el) ->
+  $(".time span, el").text(time)
 
-addBattery: (el) ->
-  @run "sh bar/commands/battery", (err, battery) =>
-    battery = parseInt(battery)
-    $(".battery span:first-child", el).text("#{battery}%")
-    $icon = $(".battery span.icon", el)
-    $icon.removeClass().addClass("icon")
-    $icon.addClass("fa #{@batteryIcon(battery)}")
+addBattery: (battery, el) ->
+  battery = parseInt(battery)
+  $(".battery span:first-child", el).text("#{battery}%")
+  $icon = $(".battery span.icon", el)
+  $icon.removeClass().addClass("icon")
+  $icon.addClass("fa #{@batteryIcon(battery)}")
 
 addPlaying: (el) ->
   @getPlayingTracks()
@@ -194,8 +196,14 @@ getPlayingTracks: ->
   @run "cat bar/playing/soundcloud", (err, track) =>
     @playing.soundcloud = if !!track then track else ""
 
+  #if @updateSonos
+  #  @updateSonos = false
+  #  setTimeout =>
+  #    @updateSonos = true
+  #  , 5000
   #@run @sonos, (err, sonos) =>
-  #  @playing.sonos = err
+  #  @playing.sonos = err + " | " + sonos
+
 
 
 batteryIcon: (percentage) =>
