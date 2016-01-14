@@ -26,7 +26,7 @@ variables in the customization section. Changes will take effect on save.
 Though spotify will work by default, there are a couple of extra steps to retrieve the currently
 playing track from Soundcloud or Youtube.
 
-1. Install the <a href="https://chrome.google.com/webstore/detail/current-track/idajgbpajjfifghfogpladkjkakafegj" target="_blank">Current Track</a> Chrome extension.
+1. Install the <a href="https://github.com/callahanrts/current-track" target="_blank">Current Track</a> Chrome extension.
 1. Generate a self signed ssl certificate
 
     ```
