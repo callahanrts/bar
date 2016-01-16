@@ -1,2 +1,0 @@
-# focused window
-echo $(kwmc focused)
