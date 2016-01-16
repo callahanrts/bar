@@ -1,0 +1,9 @@
+{
+  "name": "com.callahanrts.bar",
+  "description": "An application to display currently playing tracks from youtube and soundcloud.",
+  "path": "HOST_PATH",
+  "type": "stdio",
+  "allowed_origins": [
+    "chrome-extension://pbjholofcleplceiijbgiknfekpgoblh/"
+  ]
+}

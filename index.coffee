@@ -110,16 +110,8 @@ command: "#{process.argv[0]} bar/commands/update.js"
 
 refreshFrequency: 1000 # ms
 
-server:  "#{process.argv[0]} bar/server.js"
-#sonos: "#{process.argv[0]} bar/commands/sonos.js 1000"
-
 render: (output) ->
-  @updateBattery = true
-
-  #@run @server
-  @run "cat '' > bar/playing/soundcloud"
-  @run "cat '' > bar/playing/youtube"
-
+  @run("bar/install")
   """
     <link rel="stylesheet" href="bar/assets/font-awesome/css/font-awesome.min.css" />
 
@@ -147,18 +139,15 @@ render: (output) ->
   """
 
 update: (output, el) ->
-  @addFocused(el)
   data = JSON.parse(output)
+  @addFocused(data.active, el)
   @addTime(data.time, el)
   @addDate(data.date, el)
   @addBattery(data.battery, el)
-  #$playing = $(".playing span:last-child", el)
-  #$playing.text(output)
-  @addPlaying(el)
+  @addPlaying(data, el)
 
-addFocused: (el) ->
-  @run "osascript -e 'tell application \"System Events\"' -e 'set frontApp to name of first application process whose frontmost is true' -e 'end tell'", (err, focused) =>
-    $(".focused span", el).text(focused)
+addFocused: (focused, el) ->
+  $(".focused span", el).text(focused)
 
 addDate: (date, el) ->
   $(".date span", el).text(date)
@@ -173,38 +162,31 @@ addBattery: (battery, el) ->
   $icon.removeClass().addClass("icon")
   $icon.addClass("fa #{@batteryIcon(battery)}")
 
-addPlaying: (el) ->
-  @getPlayingTracks()
+addPlaying: (music, el) ->
+  @source ||= {}
 
-  for source, track of @playing
-    $icon = $(".playing span.icon")
+  # DOM handles
+  $icon = $(".playing span.icon")
+  $playing = $(".playing span:last-child", el)
+
+  playing = { track: "", source: "", icon: "" }
+
+  if music.spotify and music.spotify.playing
+    playing.track = music.spotify.track
+    playing.icon = @playingIcon(music.spotify.source)
+    playing.source = music.spotify.source
+  else if music.browser and music.browser.playing
+    playing.track = music.browser.track
+    playing.icon = @playingIcon(music.browser.source)
+    playing.source = music.browser.source
+
+  # Current source has changed
+  if @source != playing.source
     $icon.removeClass().addClass("icon")
-    $playing = $(".playing span:last-child", el)
-    $playing.text("")
-    if track
-      $icon.addClass("fa fa-#{@playingIcon(source)}")
-      $playing.text(track)
-      break
+    $icon.addClass("fa fa-#{playing.icon}")
+    $playing.text(playing.track)
 
-getPlayingTracks: ->
-  @run "sh bar/commands/spotify", (err, spotify) =>
-    @playing.spotify = if !!spotify then spotify else ""
-
-  @run "cat bar/playing/youtube", (err, track) =>
-    @playing.youtube = if !!track then track else ""
-
-  @run "cat bar/playing/soundcloud", (err, track) =>
-    @playing.soundcloud = if !!track then track else ""
-
-  #if @updateSonos
-  #  @updateSonos = false
-  #  setTimeout =>
-  #    @updateSonos = true
-  #  , 5000
-  #@run @sonos, (err, sonos) =>
-  #  @playing.sonos = err + " | " + sonos
-
-
+  @source = music.source
 
 batteryIcon: (percentage) =>
   return if percentage > 90

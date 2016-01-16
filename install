@@ -1,0 +1,28 @@
+#!/bin/sh
+# Copyright 2013 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+DIR="$(pwd)/bar"
+TARGET_DIR="$HOME/Library/Application Support/Google/Chrome/NativeMessagingHosts"
+HOST_NAME=com.callahanrts.bar
+
+if [ $1 ] && [ $1 == "uninstall" ]; then
+  rm "$TARGET_DIR/$HOST_NAME.json"
+  echo "Native messaging host $HOST_NAME has been uninstalled."
+else
+  # Make sure native hosts directory exists
+  mkdir -p "$TARGET_DIR"
+
+  # Copy native messaging host manifest.
+  cp "$DIR/$HOST_NAME.json" "$TARGET_DIR"
+
+  # Update host path in the manifest.
+  HOST_PATH=$DIR/native-messaging-host
+  ESCAPED_HOST_PATH=${HOST_PATH////\\/}
+  sed -i -e "s/HOST_PATH/$ESCAPED_HOST_PATH/" "$TARGET_DIR/$HOST_NAME.json"
+
+  # Set permissions for the manifest so that all users can read it.
+  chmod o+r "$TARGET_DIR/$HOST_NAME.json"
+  echo "Native messaging host $HOST_NAME has been installed."
+fi
