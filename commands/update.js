@@ -23,7 +23,7 @@ var browserPlaying = function(){
   data = fs.readFileSync("bar/playing/browser", "utf-8");
 
   if(!!data && new Date().getTime() - lastModified.getTime() < 5000){
-    data = JSON.parse(data);
+    data = JSON.parse(data)
   }
 
   return data;
@@ -44,15 +44,14 @@ var spotifyPlaying = function(){
         spotify.getTrack(function(err, track){
           if(!err && !!track && state.playing){
             state.track = track.artist + ' - ' + track.name;
-          } else {
-            state.err = err;
-            state.track = track;
           }
           promise.resolve(state);
         });
       } else {
         promise.resolve(state);
       }
+    } else {
+      promise.resolve(state);
     }
   });
 
