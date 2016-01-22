@@ -30,7 +30,7 @@ variables in the customization section. Changes will take effect on save.
 ## Current Track
 
 Though spotify will work by default, you will need to
-Install the <a href="https://github.com/callahanrts/current-track" target="_blank">Current Track</a>
+Install the <a href="https://chrome.google.com/webstore/detail/current-track/idajgbpajjfifghfogpladkjkakafegj" target="_blank">Current Track</a> ([source](https://github.com/callahanrts/current-track))
 Chrome extension to display current tracks from Youtube and Soundcloud.
 
 
