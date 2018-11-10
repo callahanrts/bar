@@ -50,8 +50,7 @@ const render = ({ output, error, side, config, data }) => {
     <span style={style(0)}>!</span>
   ) : (
     <span style={style(data)}>
-      {data || ''}
-      {error}
+      {data}
       <Icon name={iconName(data)} style={iconStyle(data)} />
     </span>
   )

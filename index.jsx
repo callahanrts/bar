@@ -39,16 +39,23 @@ const result = (data, key) => {
   try {
     return JSON.parse(data)[key]
   } catch (e) {
-    return null
+    return ''
   }
 }
 
 export const command = 'sh bar/scripts/update'
-export const render = ({ output, error }) => (
-  <div style={barStyle}>
-  { output }
-  {error}
-    <Time config={config.time} side="right"></Time>
-    <Battery config={config.battery} data={result(output, "battery")} side="right" />
-  </div>
-)
+export const render = ({ output, error }) => {
+  if(error) {
+    console.log(new Date())
+    console.log(error)
+  }
+  return error ? (
+    <div style={barStyle}></div>
+  )  : (
+    <div style={barStyle}>
+      { output }
+      <Time config={config.time} side="right"></Time>
+      <Battery config={config.battery} data={result(output, "battery")} side="right" />
+    </div>
+  );
+}
