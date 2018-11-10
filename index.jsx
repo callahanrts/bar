@@ -1,9 +1,11 @@
 // Update every second for the clock. Expensive elements should
 // throttle themselves
-export const refreshFrequency = 1000 // ms
+export const refreshFrequency = 5000 // ms
+
 import { theme } from './lib/style.js';
 import {
-  Time
+  Time,
+  Battery
 } from './elements/index.jsx'
 
 const config = {
@@ -13,6 +15,9 @@ const config = {
       padding: '0 15px',
       backgroundColor: theme.backgroundLight,
     }
+  },
+  battery: {
+    style: {}
   }
 }
 
@@ -29,10 +34,21 @@ const barStyle = {
   fontSize: '.9rem',
 }
 
-export const command = "echo Hello World!"
-export const render = ({ output }) => (
+
+const result = (data, key) => {
+  try {
+    return JSON.parse(data)[key]
+  } catch (e) {
+    return null
+  }
+}
+
+export const command = 'sh bar/scripts/update'
+export const render = ({ output, error }) => (
   <div style={barStyle}>
-    {output}
-    <Time config={config.time} theme={theme} side="right"></Time>
+  { output }
+  {error}
+    <Time config={config.time} side="right"></Time>
+    <Battery config={config.battery} data={result(output, "battery")} side="right" />
   </div>
 )
