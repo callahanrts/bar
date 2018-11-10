@@ -1,3 +1,5 @@
+import { theme } from '../lib/style.js'
+
 const getViewBox = name => {
   switch (name) {
     case "clock":
@@ -21,30 +23,47 @@ const getPath = (name, props) => {
   }
 };
 
+const divStyle = (style) => {
+  return {
+    ...style,
+    position: 'relative',
+    maxHeight: '100%',
+    display: 'inline-block',
+  }
+}
+
+const iconStyle = () => {
+  return {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-25%, -32%)',
+  }
+}
+
 const Icon = ({
   name = "",
   style = {},
-  fill = "#efefef",
+  fill = theme.textDim,
   viewBox = "",
   width = "100%",
   className = "",
   height = "100%"
 }) => (
-  <svg
-    height={height}
-    width={width}
-    style={style}
-
-    viewBox={getViewBox(name)}
-    aria-hidden="true"
-    data-prefix="far"
-    data-icon="clock"
-    class="svg-inline--fa fa-clock fa-w-16"
-    role="img"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    { getPath(name, { fill })}
-  </svg>
+  <span style={divStyle(style)}>
+    <svg
+      style={iconStyle()}
+      viewBox={getViewBox(name)}
+      aria-hidden="true"
+      data-prefix="far"
+      data-icon="clock"
+      class="svg-inline--fa fa-clock fa-w-16"
+      role="img"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      { getPath(name, { fill })}
+    </svg>
+  </span>
 );
 
 export default Icon;

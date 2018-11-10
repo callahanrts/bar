@@ -1,15 +1,19 @@
 // Update every second for the clock. Expensive elements should
 // throttle themselves
 export const refreshFrequency = 1000 // ms
-
+import { theme } from './lib/style.js';
 import {
   Time
 } from './elements/index.jsx'
 
-const theme = {
-  background: '#333',
-  text: '#efefef',
-  textDim: '#ccc'
+const config = {
+  time: {
+    format: "%l:%M",
+    style: {
+      padding: '0 15px',
+      backgroundColor: theme.backgroundLight,
+    }
+  }
 }
 
 const barStyle = {
@@ -21,12 +25,14 @@ const barStyle = {
   overflow: 'hidden',
   color: theme.text,
   height: '25px',
+  fontFamily: 'Helvetica',
+  fontSize: '.9rem',
 }
 
 export const command = "echo Hello World!"
 export const render = ({ output }) => (
   <div style={barStyle}>
     {output}
-    <Time side="right"></Time>
+    <Time config={config.time} theme={theme} side="right"></Time>
   </div>
 )
