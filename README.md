@@ -43,5 +43,5 @@ If you find a bug or have any questions about Bar, [submit an issue](https://git
 
 
 ## Screenshots
-![Spotify](http://i.imgur.com/HGJj6iR.png)
+![Spotify](./screenshots/1.png)
 
