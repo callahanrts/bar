@@ -19,9 +19,11 @@ const render = ({ config, output, error, side, data }) => {
     return style
   }
 
-  return error ? (
+  let errorContent = (
     <span style={style}>!</span>
-  ) : (
+  )
+
+  let workspaces = (
     <span style={style}>
       <span style={spaceStyle(1, data)}>
         <i className="fa fa-terminal"></i>
@@ -40,6 +42,12 @@ const render = ({ config, output, error, side, data }) => {
       </span>
     </span>
   )
+
+  let noChunkwm = (
+    <span style={{...style, opacity: 0.4}}>ChunkWM not installed</span>
+  )
+
+  return error ? errorContent : data ? workspaces : noChunkwm
 }
 
 export default render
