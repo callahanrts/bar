@@ -1,6 +1,6 @@
 {
   "name": "Bar",
-  "description": "A menubar replacement that displays basic information and the currently playing song from Spotify/Youtube/Soundcloud",
+  "description": "A menubar replacement that displays basic information and the currently playing song from Spotify",
   "author": "Cody Callahan",
   "email": "callahanrts@gmail.com"
 }
