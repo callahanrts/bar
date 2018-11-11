@@ -4,6 +4,7 @@
 Bar is an  [Übersicht](https://github.com/felixhageloh/uebersicht) widget
 that places a customizable bar on your desktop.
 
+![Spotify](./screenshots/1.png)
 
 ## Elements
 
@@ -40,8 +41,4 @@ cp bin/uberrefresh /usr/local/bin/uberrefresh
 ## Questions?
 
 If you find a bug or have any questions about Bar, [submit an issue](https://github.com/callahanrts/bar/issues/new).
-
-
-## Screenshots
-![Spotify](./screenshots/1.png)
 
