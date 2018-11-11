@@ -1,19 +1,16 @@
 
 # Bar
 
-Bar is an [Übersicht](https://github.com/felixhageloh/uebersicht) widget that shows some useful information in an elegant way.
+Bar is an  [Übersicht](https://github.com/felixhageloh/uebersicht) widget
+that places a customizable bar on your desktop.
 
 
-## Modules
+## Elements
 
-- Active application
 - Currently playing music from
   - Soundcloud
-  - Spotify
-  - Youtube
 - Battery
-- Date
-- Time
+- Date/Time
 
 
 ## Installation
@@ -23,8 +20,9 @@ Download (or clone) this repository and place the folder in your Übersicht widg
 
 ## Configuration
 
-Open [index.coffee](https://github.com/callahanrts/bar/blob/master/index.coffee) and edit the
-variables in the customization section. Changes will take effect on save.
+Open [index.jsx](https://github.com/callahanrts/bar/blob/master/index.coffee)
+and edit as you'd like. Some of the objects toward the top should make
+customization a little easier.
 
 ## Space configuration
 It's possible to get chunkwm to update when spaces are switched. You can
@@ -39,21 +37,11 @@ cmd - 1 : khd -p "cmd + alt - 1" && uberrefresh
 cp bin/uberrefresh /usr/local/bin/uberrefresh
 ```
 
-
-## Current Track
-
-Though spotify will work by default, you will need to
-Install the <a href="https://chrome.google.com/webstore/detail/current-track/idajgbpajjfifghfogpladkjkakafegj" target="_blank">Current Track</a> ([source](https://github.com/callahanrts/current-track))
-Chrome extension to display current tracks from Youtube and Soundcloud.
-
-
 ## Questions?
 
 If you find a bug or have any questions about Bar, [submit an issue](https://github.com/callahanrts/bar/issues/new).
 
 
 ## Screenshots
-![Soundcloud](http://i.imgur.com/ENprGEy.png)
 ![Spotify](http://i.imgur.com/HGJj6iR.png)
-![Youtube](http://i.imgur.com/5dqSypY.png)
 
