@@ -7,7 +7,8 @@ import {
   Battery,
   Cpu,
   Time,
-  Workspaces
+  Workspaces,
+  Playing
 } from './elements/index.jsx'
 
 const config = {
@@ -25,6 +26,9 @@ const config = {
     style: {}
   },
   cpu: {
+    style: {}
+  },
+  playing: {
     style: {}
   }
 }
@@ -56,11 +60,14 @@ const result = (data, key) => {
 export const command = `
 BAT=$(pmset -g batt | egrep '([0-9]+\%).*' -o --colour=auto | cut -f1 -d';');
 SPACE=$(echo $(chunkc tiling::query -d id))
+SPOTIFY=$(osascript -e 'tell application "Spotify"	if player state is playing then		set artistName to artist of current track		set trackName to name of current track		return artistName & " - " & trackName	else		return ""	end ifend tell')
+
 
 echo $(cat <<-EOF
   {
     "battery": "$BAT",
-    "workspace": "$SPACE"
+    "workspace": "$SPACE",
+    "playing": "$SPOTIFY"
   }
 EOF
 );
@@ -78,6 +85,8 @@ export const render = ({ output, error }) => {
     <div style={barStyle}>
       <link rel="stylesheet" type="text/css" href="bar/assets/font-awesome/css/all.min.css" />
       <Workspaces config={config.workspaces} data={result(output, "workspace")} side="left" />
+
+      <Playing config={config.playing} data={result(output, "playing")} />
 
       <Time config={config.time} side="right"></Time>
       <Battery config={config.battery} data={result(output, "battery")} side="right" />
