@@ -1,5 +1,4 @@
-import { element, icon } from '../lib/style.js';
-import Icon from '../icons/index.jsx';
+import { element } from '../lib/style.js';
 
 const render = ({ output, error, side, config, data }) => {
   var batColor = (level) => {
@@ -23,35 +22,32 @@ const render = ({ output, error, side, config, data }) => {
     }
   }
 
-  var iconStyle = (level) => {
-    return {
-      ...icon,
-      padding: '0 3px',
-      height: '16px',
-      width: '20px',
-      color: batColor(level),
-    }
+  var iconStyle = {
+    padding: '0 0 0 10px',
+    fontSize: '16px'
   }
 
   var iconName = (level) => {
     var level = parseInt(level)
     if (level > 80)
-      return "battery-4"
+      return "battery-full"
     if (level > 60)
-      return "battery-3"
+      return "battery-three-quarters"
     if (level > 40)
-      return "battery-2"
+      return "battery-half"
     if (level > 20)
-      return "battery-1"
-    return "battery-0"
+      return "battery-quarter"
+    return "battery-empty"
   }
 
   return error ? (
     <span style={style(0)}>!</span>
   ) : (
     <span style={style(data)}>
-      {data}
-      <Icon name={iconName(data)} style={iconStyle(data)} />
+      <span>{data}</span>
+      <span style={iconStyle}>
+        <i className={'far fa-' + iconName(data)}></i>
+      </span>
     </span>
   )
 }
