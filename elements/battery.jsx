@@ -40,8 +40,8 @@ const render = ({ output, error, side, config, data }) => {
     return "battery-empty"
   }
 
-  return error ? (
-    <span style={style(0)}>!</span>
+  return error || data == 0 ? (
+    <span style={style(0)}></span>
   ) : (
     <span style={style(data)}>
       <span>{data}</span>

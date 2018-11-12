@@ -47,7 +47,7 @@ const render = ({ config, output, error, side, data }) => {
     <span style={{...style, opacity: 0.4}}>ChunkWM not installed</span>
   )
 
-  return error ? errorContent : data ? workspaces : noChunkwm
+  return workspaces//error ? errorContent : data ? workspaces : noChunkwm
 }
 
 export default render

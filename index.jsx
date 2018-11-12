@@ -93,5 +93,5 @@ export const render = ({ output, error }) => {
       <Battery config={config.battery} data={result(output, "battery")} side="right" />
     </div>
   )
-  return error || !output ? errorContent : content
+  return error ? errorContent : content
 }
