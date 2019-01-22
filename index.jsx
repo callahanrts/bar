@@ -97,7 +97,7 @@ export const render = ({ output, error }) => {
   )
   let content = (
     <div style={barStyle}>
-      <link rel="stylesheet" type="text/css" href="./assets/font-awesome/css/all.min.css" />
+      <link rel="stylesheet" type="text/css" href="bar/assets/font-awesome/css/all.min.css" />
       <Workspaces config={config.workspaces} data={result(output, "workspace")} side="left" />
 
       <Playing config={config.playing} data={result(output, "playing")} />
