@@ -60,7 +60,20 @@ const result = (data, key) => {
 export const command = `
 BAT=$(pmset -g batt | egrep '([0-9]+\%).*' -o --colour=auto | cut -f1 -d';');
 SPACE=$(if command -v chunkc >/dev/null 2>&1; then echo $(chunkc tiling::query -d id); else echo ""; fi)
-SPOTIFY=$(osascript -e 'tell application "System Events"set processList to (name of every process)end tellif (processList contains "Spotify") is true thentell application "Spotify"if player state is playing thenset artistName to artist of current trackset trackName to name of current trackreturn artistName & " - " & trackNameelsereturn ""end ifend tellend if')
+SPOTIFY=$(osascript -e 'tell application "System Events"
+set processList to (name of every process)
+end tell
+if (processList contains "Spotify") is true then
+tell application "Spotify"
+if player state is playing then
+set artistName to artist of current track
+set trackName to name of current track
+return artistName & " - " & trackName
+else
+return ""
+end if
+end tell
+end if')
 
 
 echo $(cat <<-EOF
@@ -84,7 +97,7 @@ export const render = ({ output, error }) => {
   )
   let content = (
     <div style={barStyle}>
-      <link rel="stylesheet" type="text/css" href="bar/assets/font-awesome/css/all.min.css" />
+      <link rel="stylesheet" type="text/css" href="./assets/font-awesome/css/all.min.css" />
       <Workspaces config={config.workspaces} data={result(output, "workspace")} side="left" />
 
       <Playing config={config.playing} data={result(output, "playing")} />
