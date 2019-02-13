@@ -59,7 +59,7 @@ const result = (data, key) => {
 // export const command = 'sh bar/scripts/update'
 export const command = `
 BAT=$(pmset -g batt | egrep '([0-9]+\%).*' -o --colour=auto | cut -f1 -d';');
-SPACE=$(if command -v chunkc >/dev/null 2>&1; then echo $(chunkc tiling::query -d id); else echo ""; fi)
+SPACE=$(if command -v /usr/local/bin/chunkc >/dev/null 2>&1; then echo $(/usr/local/bin/chunkc tiling::query -d id); else echo ""; fi)
 SPOTIFY=$(osascript -e 'tell application "System Events"set processList to (name of every process)end tellif (processList contains "Spotify") is true thentell application "Spotify"if player state is playing thenset artistName to artist of current trackset trackName to name of current trackreturn artistName & " - " & trackNameelsereturn ""end ifend tellend if')
 
 
