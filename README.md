@@ -9,7 +9,7 @@ that places a customizable bar on your desktop.
 ## Elements
 
 - Currently playing music from
-  - Soundcloud
+  - Spotify
 - Battery
 - Date/Time
 
